@@ -1,4 +1,4 @@
-# Expense Tracker — DevSecOps Hands-on Lab
+# Expense Tracker — DevSecOps Hands-on Lab.
 
 **Stack:** React/Vite + Nginx, Node.js/Express, MongoDB, Docker Compose, GitHub Actions, Trivy, Docker Hub, AWS EC2.
 
@@ -63,6 +63,7 @@ ssh -i ~/Downloads/your-ec2-key.pem ubuntu@YOUR_EC2_PUBLIC_IP
 ```
 
 4. Install Docker and ComposeV2.
+
 ```bash
 sudo apt update && sudo apt install -y docker.io docker-compose-v2
 sudo systemctl enable --now docker
@@ -100,14 +101,14 @@ The output contains a fingerprint such as `SHA256:...`. Copy only the **SHA256:.
 
 Repository → **Settings → Secrets and variables → Actions**.
 
-| Name | GitHub type | Example / what to enter |
-|---|---|---|
-| `EC2_HOST` | Variable | `ec2-xx-xx-xx-xx.compute.amazonaws.com` or public IP |
-| `EC2_USER` | Variable | `ubuntu` |
-| `EC2_SSH_KEY` | Secret | **Complete PEM/OpenSSH private key contents**, including BEGIN/END lines |
-| `EC2_HOST_FINGERPRINT` | Variable | Verified `SHA256:...` ED25519 host key fingerprint |
-| `DOCKERHUB_USERNAME` | Variable | Your Docker Hub username |
-| `DOCKERHUB_TOKEN` | Secret | Docker Hub personal access token |
+| Name                   | GitHub type | Example / what to enter                                                  |
+| ---------------------- | ----------- | ------------------------------------------------------------------------ |
+| `EC2_HOST`             | Variable    | `ec2-xx-xx-xx-xx.compute.amazonaws.com` or public IP                     |
+| `EC2_USER`             | Variable    | `ubuntu`                                                                 |
+| `EC2_SSH_KEY`          | Secret      | **Complete PEM/OpenSSH private key contents**, including BEGIN/END lines |
+| `EC2_HOST_FINGERPRINT` | Variable    | Verified `SHA256:...` ED25519 host key fingerprint                       |
+| `DOCKERHUB_USERNAME`   | Variable    | Your Docker Hub username                                                 |
+| `DOCKERHUB_TOKEN`      | Secret      | Docker Hub personal access token                                         |
 
 To get the private key content locally, run `cat ~/Downloads/your-ec2-key.pem` and copy the entire output to the secret. **Never commit or share the key**. The public key is already authorized on EC2 by the EC2 key pair; you do **not** need a second authentication public key in GitHub. `EC2_HOST_FINGERPRINT` authenticates the **server**, whereas `EC2_SSH_KEY` authenticates the **client**.
 
@@ -174,7 +175,6 @@ The frontend Nginx proxy routes `/api/` requests to the backend container using 
 
 This is a learning deployment. For production: use TLS/HTTPS, restrict SSH via a trusted network or use a managed deployment method, protect the `production` environment, pin GitHub Actions to immutable commit hashes, pin container base images by digest, commit npm lockfiles and use `npm ci`, configure MongoDB authentication and backups, use least-privilege Docker Hub tokens, add integration tests and rollback, and consider an image registry with immutable tags. No OWASP Dependency-Check or SonarQube is included, as requested.
 
-
 ## ESLint `fetch is not defined` troubleshooting
 
 Node.js 22 includes the global `fetch` API, but ESLint `no-undef` requires it to be declared as a global. Both backend and frontend ESLint configurations include `fetch: 'readonly'`. Do not disable the `no-undef` rule to solve this error.
@@ -187,7 +187,6 @@ cd ../frontend && npm install && npm run lint && npm test && npm run build
 ```
 
 If your local Node version is older, upgrade to Node.js 22 to match GitHub Actions.
-
 
 ## Backend test process exits automatically (fix)
 
